@@ -5,6 +5,9 @@
         "APP_KEY": "base64:Gthfl1NEhVn58BAJInK9sX4/WA0w5O0maqwfGZ2n40Y=",
         "APP_DEBUG": "false"
       }
+    },
+    "deploy": {
+      "startCommand": "php artisan serve --host=0.0.0.0 --port=8000"
     }
   }
   
