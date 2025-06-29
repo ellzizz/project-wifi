@@ -8,6 +8,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TeknisiController;
 use App\Http\Controllers\AdminUserController;
 
+Route::get('/ping', function () {
+    return response('OK', 200);
+});
+
 // ======== REGISTER ========
 Route::get('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/register', [AuthController::class, 'doRegister']);
