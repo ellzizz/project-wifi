@@ -1,32 +1,42 @@
-FROM php:8.2-cli
+FROM php:8.2-fpm
 
-# Install dependensi dasar
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
     sqlite3 \
     libsqlite3-dev \
-    zip
+    zip \
+    libzip-dev \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    nginx
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo pdo_sqlite mbstring zip exif pcntl
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Set workdir
-WORKDIR /app
+# Set working directory
+WORKDIR /var/www
 
-# Salin semua file ke dalam container
+# Copy source
 COPY . .
 
-# Install dependensi Laravel
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Generate SQLite DB file
-RUN mkdir -p /var/data && touch /var/data/database.sqlite
+# Setup SQLite
+RUN mkdir -p database && touch database/database.sqlite
 
-# Jalankan migration
-RUN php artisan migrate --force || true
+# Set permissions
+RUN chown -R www-data:www-data /var/www
 
-# Jalankan Laravel dev server
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+# Expose port
+EXPOSE 8080
 
+# Start Laravel using PHP’s built-in server (or use nginx + fpm later)
+CMD php artisan serve --host=0.0.0.0 --port=8080
