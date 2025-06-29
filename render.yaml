@@ -1,12 +1,12 @@
 services:
   - type: web
-    name: ellziz-app
-    env: php
-    buildCommand: |
-      touch /var/data/database.sqlite
-      composer install
-      php artisan migrate --force
-    startCommand: php artisan serve --host=0.0.0.0 --port=10000
+    name: ellzizz-app
+    env: docker
+    dockerfilePath: ./Dockerfile
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1
     envVars:
       - key: APP_KEY
         value: base64:Gthfl1NEhVn58BAJInK9sX4/WA0w5O0maqwfGZ2n40Y=
@@ -14,7 +14,3 @@ services:
         value: sqlite
       - key: DB_DATABASE
         value: /var/data/database.sqlite
-    disk:
-      name: data
-      mountPath: /var/data
-      sizeGB: 1
