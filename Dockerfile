@@ -28,4 +28,5 @@ RUN mkdir -p /var/data && touch /var/data/database.sqlite
 RUN php artisan migrate --force || true
 
 # Jalankan Laravel dev server
-CMD php artisan serve --host=0.0.0.0 --port=10000
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+
