@@ -22,7 +22,7 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 # Generate SQLite DB file
-RUN touch /var/data/database.sqlite
+RUN mkdir -p /var/data && touch /var/data/database.sqlite
 
 # Jalankan migration
 RUN php artisan migrate --force || true
